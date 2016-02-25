@@ -242,6 +242,35 @@ HTML5？
 
 ## <a name='css'>CSS</a>
 
+- css flex布局的兼容性写法。
+
+    flex性能很差，尽量避免使用，就像js中的with一样的东西。一般仍然用其它的布局方案。一定要写的话：
+    
+    .box{
+      width: 75%;
+      height: 50px;
+      background: #eee;
+      border:#ccc 1px solid;
+      margin: 20px auto;
+      padding: 5px;
+      display: -webkit-box;
+        display: -moz-box;
+        display: -o-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+    .item{
+      border:#ccc 1px solid;
+      margin: 0 5px;
+      height: 48px;
+      -moz-box-flex: 1;
+        -webkit-box-flex: 1;
+            -o-box-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
+    }
+  
+
 - css引入方式有哪几种？使用link和@import有什么区别？
 
         引入方法：link、import、style标签、style属性、js操作
@@ -862,6 +891,38 @@ HTML5？
             undefined
             Q：有张三这个人么？
             A：没有！
+
+- js保留两位小数的方法
+  
+    // toFixed 有精度问题，js里面的toFixed保留小数的时候，是四舍五入的，但是项目需求是不要四舍五入，即：小数点后第三位如果有值则进一
+      0.235.toFixed(2) 输出0.23
+      0.236.toFixed(2) 输出0.24
+    
+      var bb = num+"";
+      var dian = bb.indexOf('.');
+      var result = "";
+      if(dian == -1){
+        result =  num.toFixed(2);
+      }else{
+        var cc = bb.substring(dian+1,bb.length);
+        if(cc.length >=3){
+          result =  (Number(num.toFixed(2))+0.01);  //注意这里就好了
+        }else{
+          result =  num.toFixed(2);
+        }
+      }
+      alert(result);
+  
+- 实现一个银行卡号四位放一个空格的功能
+
+    this.value.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ")
+
+    (?=)会作为匹配校验，但不会出现在匹配结果字符串里面
+    (?:)会作为匹配校验，并出现在匹配结果字符里面，它跟(...)不同的地方在于，不作为子匹配返回（我还是没弄懂，姑且先死记住）
+
+- 页面无刷新上传的两种实现原理
+
+    formData与iframe，用了uploadify.js的需要了解下。XMLHttpRequest Level 2 添加了一个新的接口——FormData。利用 FormData 对象，我们可以通过 JavaScript 用一些键值对来模拟一系列表单控件，我们还可以使用 XMLHttpRequest 的 send() 方法来异步的提交表单。与普通的 Ajax 相比，使用 FormData 的最大优点就是我们可以异步上传二进制文件。
 
 -  写一个通用的事件侦听器函数。
 
